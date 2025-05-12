@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Vehicle | Vehicle Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .form-container {
+      background-color: #1e1e1e;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+      width: 90%;
+      max-width: 600px;
+    }
+    h2 {
+      text-align: center;
+      color: #00fff2;
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background-color: #2a2a2a;
+      color: #fff;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      box-shadow: 0 0 6px #00fff2;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Add Vehicle</h2>
+    <form method="POST" action="{{ url_for('add_vehicle') }}">
+      <!-- User Info -->
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <!-- Vehicle Details -->
+      <div class="form-group">
+        <label for="vehicle_name">Vehicle Name</label>
+        <input type="text" id="vehicle_name" name="vehicle_name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="vehicle_model">Vehicle Model</label>
+        <input type="text" id="vehicle_model" name="vehicle_model" required />
+      </div>
+
+      <div class="form-group">
+        <label for="registration_number">Registration Number</label>
+        <input type="text" id="registration_number" name="registration_number" required />
+      </div>
+
+      <div class="form-group">
+        <label for="fault_description">Fault Description</label>
+        <textarea id="fault_description" name="fault_description" rows="4" placeholder="Describe any issue or leave blank if none" oninput="updateMaintenance()"></textarea>
+      </div>
+
+      <!-- 🛠️ Maintenance Instructions -->
+      <div class="form-group">
+        <label for="maintenance_instructions">Maintenance Instructions</label>
+        <textarea id="maintenance_instructions" name="maintenance_instructions" rows="12">
+• Oil change every 5,000 km  
+• Brake inspection every 6 months  
+• Tire pressure check monthly  
+• Coolant and fluid levels check quarterly  
+• Battery terminals cleaning annually  
+• Air filter replacement every 15,000 km  
+• Transmission fluid change every 30,000 to 60,000 miles  
+• Suspension system inspection  
+• Radiator flush every 2 years or 30,000 miles  
+• A/C refrigerant check annually  
+• Fuel filter replacement every 30,000 to 50,000 miles  
+• Exhaust system inspection
+        </textarea>
+      </div>
+
+      <!-- Removed submit button -->
+    </form>
+  </div>
+
+  <script>
+    function updateMaintenance() {
+      const fault = document.getElementById("fault_description").value.toLowerCase();
+      const maintenanceField = document.getElementById("maintenance_instructions");
+
+      if (fault.includes("brake")) {
+        maintenanceField.value = "• Check brake pads and discs\n• Top up brake fluid\n• Inspect brake lines and hoses";
+      } else if (fault.includes("engine")) {
+        maintenanceField.value = "• Engine oil change\n• Spark plug inspection\n• Check coolant and air filter\n• Scan engine codes";
+      } else if (fault.includes("tire") || fault.includes("tyre")) {
+        maintenanceField.value = "• Check tire pressure\n• Rotate tires\n• Inspect tread depth\n• Check for punctures";
+      } else if (fault.includes("battery")) {
+        maintenanceField.value = "• Check battery charge level\n• Clean terminals\n• Test alternator output";
+      } else if (fault.includes("light")) {
+        maintenanceField.value = "• Replace faulty bulbs\n• Check wiring and fuses\n• Clean headlight covers";
+      } else if (fault.includes("transmission")) {
+        maintenanceField.value = "• Change transmission fluid\n• Inspect for fluid leaks\n• Check transmission filter\n• Inspect belts and hoses";
+      } else if (fault.includes("suspension")) {
+        maintenanceField.value = "• Inspect suspension components\n• Check steering components\n• Align wheels\n• Inspect ball joints and tie rods";
+      } else if (fault.includes("coolant")) {
+        maintenanceField.value = "• Check coolant level\n• Flush radiator every 2 years\n• Inspect radiator hoses\n• Check thermostat";
+      } else if (fault.includes("ac")) {
+        maintenanceField.value = "• Check refrigerant levels\n• Replace cabin air filter\n• Inspect A/C system for leaks";
+      } else if (fault.includes("fuel")) {
+        maintenanceField.value = "• Replace fuel filter\n• Clean fuel injectors\n• Inspect fuel lines for leaks";
+      } else if (fault.includes("exhaust")) {
+        maintenanceField.value = "• Inspect exhaust pipes\n• Check muffler and catalytic converter\n• Replace oxygen sensors";
+      } else {
+        maintenanceField.value = "• Oil change every 5,000 km\n• Brake inspection every 6 months\n• Tire pressure check monthly\n• Coolant and fluid levels check quarterly\n• Battery terminals cleaning annually\n• Air filter replacement every 15,000 km\n• Transmission fluid change every 30,000 to 60,000 miles\n• Suspension system inspection\n• Radiator flush every 2 years or 30,000 miles\n• A/C refrigerant check annually\n• Fuel filter replacement every 30,000 to 50,000 miles\n• Exhaust system inspection";
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dektra Vehicle Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #0f0f0f, #1c1c1c);
+      color: white;
+      min-height: 100vh;
+    }
+    nav {
+      backdrop-filter: blur(10px);
+      background-color: rgba(20, 20, 20, 0.6);
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    nav .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #00fff2;
+      text-shadow: 0 0 6px #00fff2;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+    nav ul li a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    nav ul li a:hover {
+      color: #00fff2;
+      text-shadow: 0 0 5px #00fff2;
+    }
+
+    .hero {
+      position: relative;
+      background: url("{{ url_for('static', filename='images/hero-bg.jpg') }}") no-repeat center center/cover;
+      padding-top: 180px;
+      padding-bottom: 150px;
+      text-align: center;
+      height: 100vh;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+    .hero h1, .hero p, .cta-button {
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: 60px;
+      margin-bottom: 30px;
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(0, 255, 242, 0.3);
+    }
+    .hero p {
+      max-width: 800px;
+      margin: 0 auto 50px auto;
+      font-size: 20px;
+      color: #ccc;
+    }
+    .cta-button {
+      background: #00fff2;
+      color: #000;
+      padding: 18px 50px;
+      border: none;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 0 15px rgba(0, 255, 242, 0.6);
+      animation: pulse 2s infinite;
+    }
+    .cta-button:hover {
+      background: #0ff;
+      box-shadow: 0 0 25px rgba(0, 255, 242, 0.9);
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px rgba(0, 255, 242, 0.5); }
+      50% { box-shadow: 0 0 20px rgba(0, 255, 242, 0.9); }
+      100% { box-shadow: 0 0 10px rgba(0, 255, 242, 0.5); }
+    }
+
+    .section {
+      padding: 120px 60px;
+      background: #111;
+    }
+    .section h2 {
+      text-align: center;
+      font-size: 36px;
+      color: #00fff2;
+      margin-bottom: 60px;
+    }
+    .cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+    .card {
+      background-color: #1a1a1a;
+      padding: 40px;
+      border-radius: 20px;
+      width: 320px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.1);
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 20px rgba(0,255,255,0.3);
+    }
+    .card h3 {
+      color: #00fff2;
+      margin-bottom: 25px;
+      font-size: 22px;
+    }
+    .card p {
+      color: #ccc;
+      font-size: 16px;
+    }
+
+    .slider {
+      position: relative;
+      max-width: 100%;
+      margin: 40px auto;
+    }
+    .slider img {
+      width: 100%;
+      border-radius: 20px;
+    }
+    .slider .prev, .slider .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 30px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 12px;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .slider .prev { left: 20px; }
+    .slider .next { right: 20px; }
+
+    .testimonials {
+      background: #222;
+      padding: 120px 60px;
+      text-align: center;
+    }
+    .testimonials h2 {
+      font-size: 32px;
+      color: #00fff2;
+      margin-bottom: 60px;
+    }
+    .testimonials .testimonial {
+      margin-bottom: 50px;
+    }
+    .testimonials .testimonial p {
+      font-size: 20px;
+      color: #ccc;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .footer {
+      background-color: #000;
+      padding: 50px 20px;
+      text-align: center;
+      font-size: 16px;
+      color: #777;
+      border-top: 1px solid #222;
+    }
+
+    @media screen and (max-width: 768px) {
+      nav { flex-direction: column; padding: 20px; }
+      .hero h1 { font-size: 45px; }
+      .cta-button { padding: 16px 45px; font-size: 16px; }
+      .section { padding: 100px 20px; }
+      .cards { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Dektra</div>
+    <ul>
+      <li><a href="{{ url_for('login') }}">Login</a></li>
+      <li><a href="{{ url_for('register') }}">Register</a></li>
+      <li><a href="{{ url_for('vehicles') }}">Vehicles</a></li>
+      <li><a href="{{ url_for('analytics') }}">Analytics</a></li>
+      <li><a href="{{ url_for('add_vehicle') }}">Add Vehicle</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1>Dektra
+      <div class="hero-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url({{ url_for('static', filename='images/car1.png') }}) no-repeat center center / cover; opacity: 0.8; z-index: -1;"></div>
+    </h1>
+    <p>Empower your fleet with intelligent diagnostics, predictive servicing, and AI-driven analytics built for tomorrow.</p>
+    <a href="{{ url_for('analytics') }}" class="cta-button">Try Smart Fleet AI</a>
+  </section>
+
+  <section class="section">
+    <h2>Our Products</h2>
+    <div class="cards">
+      <div class="card"><h3>Driver Safety</h3><p>Prevent accidents and reduce risk with AI-powered driver monitoring.</p></div>
+      <div class="card"><h3>Fleet Management</h3><p>Gain full fleet visibility and optimize operations.</p></div>
+      <div class="card"><h3>Equipment Monitoring</h3><p>Monitor equipment status and reduce downtime.</p></div>
+      <div class="card"><h3>Spend Management</h3><p>Manage fleet budgets and optimize fuel usage.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Featured Solutions</h2>
+    <div class="slider">
+      <img src="{{ url_for('static', filename='images/slider1.jpg') }}" alt="Slider Image 1">
+      <div class="prev" onclick="plusSlides(-1)">&#10094;</div>
+      <div class="next" onclick="plusSlides(1)">&#10095;</div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonial">
+      <p>"Dektra has transformed the way we manage our fleet."</p>
+      <h4>- John Doe, Fleet Manager, ABC Logistics</h4>
+    </div>
+    <div class="testimonial">
+      <p>"The AI-powered tools saved us time and money."</p>
+      <h4>- Jane Smith, CEO, XYZ Transport</h4>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Solutions by Industry</h2>
+    <div class="cards">
+      <div class="card"><h3>Construction</h3><p>Improve safety and asset utilization on sites.</p></div>
+      <div class="card"><h3>Public Sector</h3><p>Enhance compliance and reduce operational costs.</p></div>
+      <div class="card"><h3>Transportation</h3><p>Boost efficiency and customer service.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Dektra Vehicle Management. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let slideIndex = 0;
+    function showSlides() {
+      let slides = document.querySelectorAll(".slider img");
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) { slideIndex = 1 }
+      slides[slideIndex - 1].style.display = "block";
+      setTimeout(showSlides, 4000);
+    }
+    function plusSlides(n) {
+      let slides = document.querySelectorAll(".slider img");
+      slideIndex += n;
+      if (slideIndex > slides.length) { slideIndex = 1 }
+      if (slideIndex < 1) { slideIndex = slides.length }
+      showSlides();
+    }
+    showSlides();
+  </script>
+
+</body>
+</html>

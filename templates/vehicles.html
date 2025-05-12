@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicles | Dektra Vehicle Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('{{ url_for("static", filename="images/hero-bg.jpg") }}') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      color: #fff;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      z-index: 0;
+    }
+    .navbar {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      background-color: rgba(20, 20, 20, 0.6);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 2;
+    }
+    .navbar .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #00fff2;
+      text-shadow: 0 0 6px #00fff2;
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+    .navbar ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    .navbar ul li a:hover {
+      color: #00fff2;
+      text-shadow: 0 0 5px #00fff2;
+    }
+
+    .vehicles-container {
+      position: relative;
+      z-index: 1;
+      width: 90%;
+      max-width: 1200px;
+      margin-top: 100px;
+    }
+    .vehicles-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .vehicles-header h1 {
+      font-size: 32px;
+      font-family: 'Orbitron', sans-serif;
+      color: #00fff2;
+      text-shadow: 0 0 6px #00fff2;
+    }
+    .search-bar {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto 50px;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-radius: 20px;
+      background-color: rgba(20, 20, 20, 0.75);
+      box-shadow: 0 0 15px rgba(0, 255, 242, 0.3);
+    }
+    .search-bar input {
+      width: 80%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background-color: #2a2a2a;
+      color: #fff;
+      font-size: 16px;
+    }
+    .search-bar button {
+      width: 15%;
+      padding: 12px;
+      background-color: #00fff2;
+      color: #000;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .search-bar button:hover {
+      background-color: #0ff;
+      box-shadow: 0 0 20px rgba(0, 255, 242, 0.8);
+    }
+    .vehicle-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+    .vehicle-card {
+      background-color: rgba(20, 20, 20, 0.85);
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 300px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0, 255, 242, 0.2);
+      text-align: center;
+      transition: 0.3s;
+    }
+    .vehicle-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    .vehicle-card h3 {
+      color: #00fff2;
+      margin-bottom: 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+    }
+    .vehicle-card p {
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+    .vehicle-card:hover {
+      box-shadow: 0 0 20px rgba(0, 255, 242, 0.6);
+    }
+    .vehicle-card .view-details {
+      background-color: #00fff2;
+      color: #000;
+      padding: 10px;
+      width: 100%;
+      font-weight: 600;
+      border-radius: 30px;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    .vehicle-card .view-details:hover {
+      background-color: #0ff;
+      box-shadow: 0 0 15px rgba(0, 255, 242, 0.6);
+    }
+
+    @media (max-width: 768px) {
+      .navbar { flex-direction: column; padding: 15px; }
+      .search-bar {
+        flex-direction: column;
+        align-items: center;
+      }
+      .search-bar input, .search-bar button {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">Dektra</div>
+  <ul>
+    <li><a href="{{ url_for('index') }}">Home</a></li>
+    <li><a href="{{ url_for('vehicles') }}">Vehicles</a></li>
+    <li><a href="{{ url_for('analytics') }}">Analytics</a></li>
+    <li><a href="{{ url_for('add_vehicle') }}">Add Vehicle</a></li>
+  </ul>
+</div>
+
+<!-- Vehicles Page -->
+<div class="vehicles-container">
+
+  <!-- Vehicles Header -->
+  <div class="vehicles-header">
+    <h1>Our Vehicle Fleet</h1>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <input type="text" placeholder="Search for vehicles..." id="search" value="{{ request.args.get('search', '') }}">
+    <button type="button" onclick="window.location.href='?search=' + document.getElementById('search').value">Search</button>
+  </div>
+
+  <!-- Vehicle Cards -->
+  <div class="vehicle-cards">
+    {% for vehicle in vehicles %}
+      <div class="vehicle-card">
+        <img src="{{ url_for('static', filename='images/' + vehicle.image) }}" alt="{{ vehicle.name }}">
+        <h3>{{ vehicle.name }}</h3>
+        <p>Model: {{ vehicle.model }}</p>
+        <p>Year: {{ vehicle.year }}</p>
+        <a href="#" class="view-details">View Details</a>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+<script>
+  function searchVehicles() {
+    const searchTerm = document.getElementById('search').value.toLowerCase();
+    const vehicleCards = document.querySelectorAll('.vehicle-card');
+
+    vehicleCards.forEach(card => {
+      const vehicleName = card.querySelector('h3').textContent.toLowerCase();
+      if (vehicleName.includes(searchTerm)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Analytics | Dektra Vehicle Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js Library -->
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('{{ url_for("static", filename="images/hero-bg.jpg") }}') no-repeat center center/cover;
+      background-size: cover;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      color: #fff;
+      position: relative;
+      padding-top: 80px; /* Avoid overlap with navbar */
+      padding-bottom: 30px;
+    }
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6); /* Dark overlay for readability */
+      backdrop-filter: blur(8px);
+      z-index: 0;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      background-color: rgba(20, 20, 20, 0.6);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 2;
+    }
+    .navbar .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #00fff2;
+      text-shadow: 0 0 6px #00fff2;
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+    .navbar ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    .navbar ul li a:hover {
+      color: #00fff2;
+      text-shadow: 0 0 5px #00fff2;
+    }
+
+    .analytics-container {
+      width: 90%;
+      max-width: 1000px;
+      margin-top: 100px; /* Added margin for spacing */
+      padding: 30px;
+      background-color: rgba(20, 20, 20, 0.85); /* Dark background for readability */
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0, 255, 242, 0.3);
+      z-index: 1;
+    }
+    .analytics-container h1 {
+      text-align: center;
+      font-size: 32px;
+      font-family: 'Orbitron', sans-serif;
+      color: #00fff2;
+      margin-bottom: 30px;
+    }
+    .chart-container {
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    .chart-container canvas {
+      max-width: 350px; /* Adjusted to make charts smaller */
+      height: 300px; /* Adjusted for better fit */
+    }
+
+    .chart-container h3 {
+      color: #fff;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">Dektra</div>
+  <ul>
+    <li><a href="{{ url_for('index') }}">Home</a></li>
+    <li><a href="{{ url_for('vehicles') }}">Vehicles</a></li>
+    <li><a href="{{ url_for('analytics') }}">Analytics</a></li>
+    <li><a href="{{ url_for('add_vehicle') }}">Add Vehicle</a></li>
+  </ul>
+</div>
+
+<!-- Analytics Container -->
+<div class="analytics-container">
+  <h1>Vehicle Analytics</h1>
+
+  <!-- Chart 1: Vehicle Count by Brand -->
+  <div class="chart-container">
+    <div>
+      <h3>Vehicle Count by Brand</h3>
+      <canvas id="brandChart"></canvas>
+    </div>
+
+    <!-- Chart 2: Vehicle Distribution by Year -->
+    <div>
+      <h3>Vehicle Distribution by Year</h3>
+      <canvas id="yearChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Chart 3: Vehicle Registration Numbers -->
+  <div class="chart-container">
+    <div>
+      <h3>Vehicle Registration Numbers</h3>
+      <canvas id="regNumberChart"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- Scripts for Charts -->
+<script>
+  // Chart 1: Vehicle Count by Brand
+  var brandChart = new Chart(document.getElementById('brandChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Toyota', 'Ford', 'Honda', 'BMW', 'Audi'],
+      datasets: [{
+        data: [15, 20, 10, 30, 25],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40'],
+        borderColor: '#fff',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        tooltip: {
+          callbacks: {
+            label: function(tooltipItem) {
+              return tooltipItem.label + ': ' + tooltipItem.raw + ' Vehicles';
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Chart 2: Vehicle Distribution by Year (Bar chart)
+  var yearChart = new Chart(document.getElementById('yearChart'), {
+    type: 'bar',
+    data: {
+      labels: ['2020', '2021', '2022', '2023', '2024'],
+      datasets: [{
+        label: 'Vehicles by Year',
+        data: [10, 15, 20, 25, 30],
+        backgroundColor: '#00fff2',
+        borderColor: '#00fff2',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: { 
+          beginAtZero: true
+        },
+        y: { 
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  // Chart 3: Vehicle Registration Numbers (Line chart)
+  var regNumberChart = new Chart(document.getElementById('regNumberChart'), {
+    type: 'line',
+    data: {
+      labels: ['A123', 'B456', 'C789', 'D012', 'E345'],
+      datasets: [{
+        label: 'Registration Numbers',
+        data: [5, 15, 25, 35, 45],
+        fill: false,
+        borderColor: '#FF6384',
+        tension: 0.1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: { 
+          beginAtZero: true
+        },
+        y: { 
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
